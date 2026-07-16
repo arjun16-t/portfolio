@@ -1,5 +1,18 @@
 /*
 ========================================
+RESET
+========================================
+*/
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+/*
+========================================
 THEME VARIABLES (Deep Space vs E-Ink)
 ========================================
 */
@@ -13,12 +26,15 @@ THEME VARIABLES (Deep Space vs E-Ink)
 }
 
 body.theme-e-ink {
-    --bg-color: #f4f4f0;         
-    --text-color: #2b2b2b;       
-    --text-muted: #52525b;
-    --accent-color: #ff5e00;
-    --card-bg: #e5e5e0;          
-    --border-color: #d4d4d0;
+    /* Muted, warm "paper" tone instead of a clean off-white,
+       and a desaturated rust accent instead of a saturated
+       vermillion — real e-ink panels can't render vivid color. */
+    --bg-color: #eae7dc;
+    --text-color: #2a2824;
+    --text-muted: #726c5e;
+    --accent-color: #9c4221;
+    --card-bg: #ded9c9;
+    --border-color: #cfc9b8;
 }
 
 /*
@@ -87,4 +103,205 @@ STICKY CARDS (For the Work Section)
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.4s ease, border-color 0.4s ease;
+}
+
+/*
+========================================
+BREAKPOINT REFERENCE (for this project)
+CSS custom properties can't be used inside
+@media conditions, so these are just a guide
+for the literal px values used below.
+
+  sm  : 640px
+  md  : 768px   <- used for nav/hero right now
+  lg  : 1024px
+  xl  : 1280px
+========================================
+*/
+
+/*
+========================================
+GLOBAL LAYOUT
+========================================
+*/
+.site {
+    font-family: 'JetBrains Mono', monospace;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.particles-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+.main {
+    position: relative;
+    z-index: 10;
+}
+
+/*
+========================================
+NAVBAR
+========================================
+*/
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 50;
+    mix-blend-mode: difference;
+    color: var(--accent-color);
+}
+
+.navbar__brand {
+    font-weight: bold;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    font-size: 1.125rem;
+}
+
+.navbar__links {
+    display: none;
+    gap: 2rem;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    align-items: center;
+}
+
+.navbar__link {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.navbar__link:hover {
+    color: var(--text-color);
+}
+
+.navbar__theme-toggle {
+    margin-left: 1rem;
+    padding: 0.25rem 0.75rem;
+    border: 1px solid var(--accent-color);
+    background: transparent;
+    color: inherit;
+    font-family: inherit;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar__theme-toggle:hover {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+}
+
+@media (min-width: 768px) {
+    .navbar__links {
+        display: flex;
+    }
+}
+
+/*
+========================================
+HERO
+========================================
+*/
+.hero {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4.5rem 1.5rem 1.5rem;
+}
+
+.hero__prompt {
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+}
+
+.hero__title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: min(18vw, 18vh);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.hero__meta {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1.5rem;
+}
+
+.hero__description p {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.hero__stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.hero__stat {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.hero__stat--last {
+    border-bottom: none;
+}
+
+.hero__stat-value--accent {
+    color: var(--accent-color);
+}
+
+@media (min-width: 768px) {
+    .hero {
+        padding: 5rem 3rem 0;
+    }
+
+    .hero__prompt {
+        font-size: 1rem;
+    }
+
+    .hero__title {
+        font-size: min(15vw, 21vh);
+    }
+
+    .hero__meta {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .hero__description p {
+        padding-right: 2rem;
+    }
 }
