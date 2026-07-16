@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arjun | ML Engineer</title>
+    
+    <!-- Fonts: Space Grotesk (Brutalist Headers) & JetBrains Mono (Technical/Data) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Tailwind CSS (via CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind Config to use our specific fonts and CSS variables -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'grotesk': ['"Space Grotesk"', 'sans-serif'],
+                        'mono': ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        /* Map to the exact CSS variables we defined */
+                        'brand-dark': 'var(--bg-color)',
+                        'brand-accent': 'var(--accent-color)',
+                    },
+                    backgroundColor: {
+                        'brand-dark': 'var(--bg-color)',
+                    },
+                    textColor: {
+                        'brand-accent': 'var(--accent-color)',
+                    },
+                    borderColor: {
+                        'brand-accent': 'var(--accent-color)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS for the Deep Space/E-Ink themes and hollow text effect -->
+    <style>
+        :root {
+            /* Mode A: Deep Space (Default) */
+            --bg-color: #0a0a0a;       /* Very dark zinc/black */
+            --text-color: #ffffff;     /* White */
+            --accent-color: #c3fffc;   /* Icy cyan */
+            --muted-color: #9ca3af;    /* Gray 400 */
+            --border-color: #262626;   /* Neutral 800 */
+        }
+
+        body.theme-e-ink {
+            /* Mode B: E-Ink */
+            --bg-color: #f4f4f0;       /* Pale textured off-white */
+            --text-color: #2d2d2d;     /* Soft charcoal */
+            --accent-color: #e65100;   /* Deep vermillion red/orange */
+            --muted-color: #6b7280;    /* Gray 500 */
+            --border-color: #d1d5db;   /* Gray 300 */
+        }
+
+        /* Smooth transition for the background and text */
+        body {
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* Hollow text effect tied to the active accent color */
+        .text-outline {
+            color: transparent;
+            -webkit-text-stroke: 1.5px var(--accent-color);
+            transition: color 0.3s ease, -webkit-text-stroke 0.3s ease;
+        }
+        
+        .text-outline:hover {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+
+<!-- Notice we use bg-theme-bg and text-theme-text now -->
+<body class="bg-theme-bg text-theme-text font-mono antialiased overflow-x-hidden relative transition-colors duration-500">
+
+    <!-- Particle Canvas Placeholder -->
+    <canvas id="particles-canvas" class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none opacity-40"></canvas>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full p-6 flex justify-between items-center z-50 mix-blend-difference text-theme-accent">
+        <div class="font-bold tracking-tighter uppercase text-lg">Arjun.Portfolio // 26</div>
+        
+        <div class="hidden md:flex gap-8 text-sm uppercase tracking-widest items-center">
+            <a href="#work" class="hover:text-theme-text transition-colors">01/Work</a>
+            <a href="#lab" class="hover:text-theme-text transition-colors">02/Lab</a>
+            <a href="#about" class="hover:text-theme-text transition-colors">03/About</a>
+            <!-- Theme Toggle Button -->
+            <button id="theme-toggle" class="ml-4 px-3 py-1 border border-theme-accent hover:bg-theme-accent hover:text-theme-bg transition-colors cursor-pointer text-xs">
+                [MODE: DEEP SPACE]
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Wrapper -->
+    <main class="relative z-10">
+        
+        <!-- Hero Section -->
+        <section class="min-h-screen flex flex-col justify-center px-6 md:px-12 pt-20">
+            <p class="text-theme-accent mb-6 text-sm md:text-base">> SYSTEM_INITIALIZED : HELLO_WORLD</p>
+            
+            <h1 class="font-grotesk text-7xl md:text-[11vw] leading-[0.85] tracking-tighter uppercase text-theme-text">
+                Machine <br>
+                <span class="text-outline">Learning</span> <br>
+                Engineer.
+            </h1>
+            
+            <!-- Terminal-style metadata grid below the hero text -->
+            <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-theme-border pt-8 max-w-5xl">
+                <div>
+                    <p class="text-theme-muted text-sm leading-relaxed pr-8">
+                        Architecting predictive models and threat detection systems. Bridging the gap between raw data analysis and deployed, scalable engineering solutions.
+                    </p>
+                </div>
+                <div class="flex flex-col gap-3 text-xs text-theme-muted uppercase tracking-widest">
+                    <div class="flex justify-between border-b border-theme-border pb-2">
+                        <span>Status</span>
+                        <span class="text-theme-accent">Seeking Internships</span>
+                    </div>
+                    <div class="flex justify-between border-b border-theme-border pb-2">
+                        <span>Location</span>
+                        <span>Bhopal, India</span>
+                    </div>
+                    <div class="flex justify-between pb-2">
+                        <span>Core Stack</span>
+                        <span>Python, PyTorch, Django</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- We will append the Work Section here next -->
+    </main>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
