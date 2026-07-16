@@ -15,7 +15,6 @@
 
 <!-- Notice we use bg-theme-bg and text-theme-text now -->
 <body class="site">
-
     <!-- Particle Canvas Placeholder -->
     <canvas id="particles-canvas" class="particles-canvas"></canvas>
 
@@ -32,13 +31,15 @@
                 [MODE: DEEP SPACE]
             </button>
         </div>
+
+        <div id="scroll-progress" class="scroll-progress"></div>
     </nav>
 
     <!-- Main Content Wrapper -->
     <main class="main">
 
         <!-- Hero Section -->
-        <section class="hero">
+        <header class="hero">
             <p class="hero__prompt">&gt; SYSTEM_INITIALIZED : HELLO_WORLD</p>
 
             <h1 class="hero__title">
@@ -69,10 +70,130 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </header>
 
-        <!-- We will append the Work Section here next -->
+        <!-- Work / Projects Section -->
+        <section id="work" class="work">
+            <!-- Massive alternating filled/outline header TICKER (Now Sticky) -->
+            <div class="work__header-wrapper">
+                <div id="work-ticker" class="work-ticker">
+                    <h2 class="section-title">
+                        <span class="text-outline">FEATURED</span> WORK 
+                        <span class="text-outline">FEATURED</span> WORK 
+                        <span class="text-outline">FEATURED</span> WORK 
+                        <span class="text-outline">FEATURED</span> WORK
+                    </h2>
+                </div>
+            </div>
+            
+            <div class="cards-container">
+                <!-- Project 1: AthenaChat -->
+                <div class="project-card">
+                    <div class="project-card__left">
+                        <div class="project-card__meta-group">
+                            <span class="project-card__category">AI Platform • 2026</span>
+                        </div>
+                        
+                        <!-- Added scramble-text class and data-text -->
+                        <h3 class="project-card__title scramble-text" data-text="AthenaChat">AthenaChat</h3>
+                        <p class="project-card__desc">Architected a chatbot-as-a-service platform with isolated vector search using Qdrant payload filtering and SHA256-based deduplication.</p>
+                        
+                        <!-- Expanded tags from resume -->
+                        <div class="project-card__metrics">
+                            <span class="metric-tag">Django REST</span>
+                            <span class="metric-tag">Jina Embeddings</span>
+                            <span class="metric-tag">Qdrant</span>
+                            <span class="metric-tag">Groq</span>
+                            <span class="metric-tag">Celery</span>
+                            <span class="metric-tag">SPLADE</span>
+                        </div>
+
+                        <a href="https://github.com/arjun16-t" target="_blank" class="github-link">
+                            [↗] VIEW_SOURCE
+                        </a>
+                    </div>
+                    <div class="project-card__right">
+                        <div class="project-visual">
+                            <div class="visual-placeholder-text">DATA_FLOW_VISUAL</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2: NSE Market Predictor -->
+                <div class="project-card">
+                    <div class="project-card__left">
+                        <div class="project-card__meta-group">
+                            <span class="project-card__category">Predictive Model • 2026</span>
+                        </div>
+                        
+                        <h3 class="project-card__title scramble-text" data-text="NSE Stock Prediction Engine">NSE Stock Prediction Engine</h3>
+                        <p class="project-card__desc">Built an end-to-end ML pipeline training GRU, LSTM, and Transformers on 55k sequences with FinBERT news sentiment fusion.</p>
+                        
+                        <!-- Expanded tags from resume -->
+                        <div class="project-card__metrics">
+                            <span class="metric-tag">PyTorch</span>
+                            <span class="metric-tag">FinBERT</span>
+                            <span class="metric-tag">SHAP</span>
+                            <span class="metric-tag">Streamlit</span>
+                            <span class="metric-tag">Pandas-TA</span>
+                            <span class="metric-tag">GRU / LSTM</span>
+                        </div>
+
+                        <a href="https://github.com/arjun16-t" target="_blank" class="github-link">
+                            [↗] VIEW_SOURCE
+                        </a>
+                    </div>
+                    <div class="project-card__right">
+                        <div class="project-visual">
+                             <div class="visual-placeholder-text">SHAP_GRAPH_VISUAL</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3: HireMailer -->
+                <div class="project-card">
+                    <div class="project-card__left">
+                        <div class="project-card__meta-group">
+                            <span class="project-card__category">Distributed System • 2025</span>
+                        </div>
+                        
+                        <h3 class="project-card__title scramble-text" data-text="HireMailer">HireMailer</h3>
+                        <p class="project-card__desc">Architected a distributed three-service system enabling non-blocking bulk email operations processing 100+ emails/batch with zero spam flagging.</p>
+                        
+                        <!-- Expanded tags from resume -->
+                        <div class="project-card__metrics">
+                            <span class="metric-tag">Python</span>
+                            <span class="metric-tag">Django</span>
+                            <span class="metric-tag">Celery</span>
+                            <span class="metric-tag">Redis</span>
+                            <span class="metric-tag">PostgreSQL</span>
+                        </div>
+
+                        <a href="https://github.com/arjun16-t" target="_blank" class="github-link">
+                            [↗] VIEW_SOURCE
+                        </a>
+                    </div>
+                    <div class="project-card__right">
+                        <div class="project-visual">
+                             <div class="visual-placeholder-text">ARCHITECTURE_DIAGRAM</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
+
+    <!-- Computer Vision Cursor -->
+    <div id="custom-cursor" class="custom-cursor">
+        <!-- The Follower (Dynamic Bounding Box) -->
+        <div class="cursor-follower">
+            <div class="cursor-bracket left"></div>
+            <div class="cursor-bracket right"></div>
+        </div>
+        <!-- The Leader (Dot and Label tracking the mouse) -->
+        <div class="cursor-dot"></div>
+        <span class="cursor-label"></span>
+    </div>
 
     <script src="js/app.js"></script>
 </body>
