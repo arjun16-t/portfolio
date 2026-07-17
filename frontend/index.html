@@ -181,6 +181,154 @@
                 </div>
             </div>
         </section>
+
+        <!-- About / System Profile Section -->
+        <section id="about" class="about">
+            
+            <!-- Scrolling ticker wrapper -->
+            <div class="about__header-wrapper">
+                <div class="scroll-ticker">
+                    <h2 class="section-title">
+                        <span class="text-outline">ABOUT</span> ME 
+                        <span class="text-outline">ABOUT</span> ME 
+                        <span class="text-outline">ABOUT</span> ME 
+                        <span class="text-outline">ABOUT</span> ME
+                    </h2>
+                </div>
+            </div>
+
+            <div class="about__grid">
+                <!-- Left Column: Badge Only -->
+                <div class="about__left">
+                    <div class="orbital-badge" id="resume-badge">
+                        <div class="orbital-badge__center">
+                            <a href="Arjun_Tomar_Resume_ML.pdf" target="_blank" class="orbital-badge__icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="7" y1="17" x2="17" y2="7"></line>
+                                    <polyline points="7 7 17 7 17 17"></polyline>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="orbital-badge__text">
+                            <svg viewBox="0 0 100 100" width="100%" height="100%">
+                                <path id="circlePath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="transparent" />
+                                <text>
+                                    <textPath href="#circlePath" startOffset="0%">
+                                        DOWNLOAD RÉSUMÉ • ARJUN TOMAR • DOWNLOAD RÉSUMÉ • ARJUN TOMAR • 
+                                    </textPath>
+                                </text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Clean Uppercase Bio -->
+                <div class="about__right">
+                    <p class="scroll-bio-text" id="scroll-bio">
+                        I am an engineering student specializing in Artificial Intelligence and Machine Learning, driven by a focus on end-to-end system architecture. Instead of just training models in isolated environments, I build the scalable backends required to deploy them. From developing multi-tenant RAG applications to engineering distributed task queues and predictive pipelines, my goal is to bridge the gap between complex raw data and robust, production-ready software.
+                    </p>
+                </div>
+            </div>
+
+            <!-- About Section Bottom Row -->
+            <div class="about__bottom-row">
+                
+                <!-- Left: Telemetry -->
+                <div class="telemetry-block">
+                    <span class="telemetry-location">BHOPAL, MADHYA PRADESH, INDIA</span>
+                    <span class="telemetry-time" id="live-clock">00:00:00 IST</span>
+                </div>
+
+                <!-- Center: System Status -->
+                <div class="system-status">
+                    <span class="status-indicator"></span>
+                    <span>SYS.STATUS: OPEN FOR INTERNSHIPS</span>
+                </div>
+
+                <!-- Right: Connect Links -->
+                <div class="connect-links">
+                    <a href="#" target="_blank" class="connect-link">
+                        <span class="connect-icon github-icon"></span>/GITHUB
+                    </a>
+                    <a href="#" target="_blank" class="connect-link">
+                        <span class="connect-icon linkedin-icon"></span>/LINKEDIN
+                    </a>
+                    <a href="#" class="connect-link">
+                        <span class="connect-icon mail-icon"></span>/MAIL
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 02 / EXPERIMENT LAB Section -->
+        <section id="lab" class="lab">
+            
+            <div class="lab__header-wrapper">
+                <div class="scroll-ticker">
+                    <h2 class="section-title">
+                        <span class="text-outline">EXPERIMENT</span> LAB 
+                        <span class="text-outline">EXPERIMENT</span> LAB 
+                        <span class="text-outline">EXPERIMENT</span> LAB 
+                    </h2>
+                </div>
+            </div>
+
+            <div class="lab__grid">
+                
+                <!-- Left Column: The Interactive Terminal -->
+                <div class="lab__left">
+                    <div class="terminal lab-terminal" id="lab-terminal">
+                        <div class="terminal__header">
+                            <div class="terminal__controls">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <span class="terminal__title">bash - root@lab-environment</span>
+                            
+                            <!-- Grouped Actions -->
+                            <div class="terminal__actions">
+                                <button class="terminal__toggle" id="fullscreen-toggle">[ ↗ ] FULLSCREEN</button>
+                            </div>
+                        </div>
+
+                        <div class="terminal__body" id="lab-terminal-body">
+                            <p class="log-line">> SELECT AN EXPERIMENT FROM THE REGISTRY TO INITIALIZE_</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: The Experiment Registry -->
+                <div class="lab__right">
+                    
+                    <!-- NEW: The Center Arrow Toggle -->
+                    <button class="sidebar-arrow-toggle" id="sidebar-toggle">
+                        <!-- Left-pointing Chevron SVG -->
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+
+                    <div class="experiment-list-wrapper">
+                        <ul class="experiment-list" id="experiment-registry">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FLOATING SOCIAL SIDEBAR (Place this near the end of your <body>) -->
+        <aside class="floating-socials" id="social-sidebar">
+            <a href="#" target="_blank" class="connect-link">
+                <span class="connect-icon github-icon"></span><span class="connect-text">/GITHUB</span>
+            </a>
+            <a href="#" target="_blank" class="connect-link">
+                <span class="connect-icon linkedin-icon"></span><span class="connect-text">/LINKEDIN</span>
+            </a>
+            <a href="#" class="connect-link">
+                <span class="connect-icon mail-icon"></span><span class="connect-text">/MAIL</span>
+            </a>
+        </aside>
+
     </main>
 
     <!-- Computer Vision Cursor -->
@@ -195,6 +343,7 @@
         <span class="cursor-label"></span>
     </div>
 
+    <script src="js/information.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

@@ -62,6 +62,14 @@ function initApp() {
   initNavbar();
   initTicker();
   initScrambleEffect();
+
+  initTerminal();
+  initTerminalTyping();
+  initScrollReveal();
+  initClock();
+
+  initLabTerminal();
+  initSocialSidebar();
 }
 
 /*
@@ -125,7 +133,7 @@ function initCursor() {
 function startFraming(element, labelText) {
     isFraming = true;
     frameTarget = element;
-    targetDotScale = 2; // Target 2x size
+    targetDotScale = 1.3; // Target 2x size
     
     if (cursorLabel) {
         cursorLabel.innerText = labelText;
@@ -285,31 +293,27 @@ const tickerSpeed = 0.8;
 const tickerLerp = 0.08;
 let isTickerRunning = false;
 
+/*
+========================================
+UNIVERSAL TICKER ANIMATION
+========================================
+*/
 function initTicker() {
-  if (!tickerElement) return;
+    // Select both the sticky ticker (work) and the normal scrolling ticker (about)
+    const tickers = document.querySelectorAll('.work-ticker, .scroll-ticker');
+    
+    if (tickers.length === 0) return;
 
-  // Start the render loop only once
-  if (!isTickerRunning) {
-    isTickerRunning = true;
-    renderTicker();
-  }
-}
-
-function renderTicker() {
-  // 1. Get current scroll position
-  const scrollY = window.scrollY;
-
-  // 2. Map scroll down to negative X (moving left)
-  tickerTargetX = -scrollY * tickerSpeed;
-
-  // 3. Smooth interpolation (lerp) towards the target
-  tickerCurrentX += (tickerTargetX - tickerCurrentX) * tickerLerp;
-
-  // 4. Apply the hardware-accelerated transform
-  tickerElement.style.transform = `translate3d(${tickerCurrentX}px, 0, 0)`;
-
-  // 5. Loop seamlessly at 60fps
-  requestAnimationFrame(renderTicker);
+    window.addEventListener('scroll', () => {
+        requestAnimationFrame(() => {
+            const scrolled = window.scrollY;
+            
+            tickers.forEach((ticker) => {
+                // Adjust the multiplier (0.3) to control the horizontal speed
+                ticker.style.transform = `translate3d(${-scrolled * 0.3}px, 0, 0)`;
+            });
+        });
+    }, { passive: true });
 }
 
 /*
@@ -374,4 +378,261 @@ function runScramble(element, chars) {
         // Increase iteration (lower number = slower reveal)
         iteration += 0.5; 
     }, 30); // Runs every 30ms
+}
+
+/*
+========================================
+ABOUT TERMINAL EXPANDER
+========================================
+*/
+function initTerminal() {
+    const toggleBtn = document.getElementById('terminal-toggle');
+    const leftColumn = document.querySelector('.about__left');
+    
+    if (!toggleBtn || !leftColumn) return;
+
+    toggleBtn.addEventListener('click', () => {
+        const isExpanded = leftColumn.classList.contains('is-expanded');
+        
+        if (isExpanded) {
+            leftColumn.classList.remove('is-expanded');
+            toggleBtn.innerText = '[+] EXPAND';
+        } else {
+            leftColumn.classList.add('is-expanded');
+            toggleBtn.innerText = '[-] COLLAPSE';
+        }
+    });
+}
+
+/*
+========================================
+SCROLL-SCRUB TEXT REVEAL
+========================================
+*/
+function initScrollReveal() {
+    const bioText = document.getElementById('scroll-bio');
+    if (!bioText) return;
+
+    // Split text into words while keeping spaces
+    const words = bioText.innerText.split(' ');
+    bioText.innerHTML = '';
+    
+    words.forEach(word => {
+        const span = document.createElement('span');
+        span.classList.add('reveal-word');
+        span.innerText = word + ' '; 
+        bioText.appendChild(span);
+    });
+
+    const wordSpans = bioText.querySelectorAll('.reveal-word');
+
+    window.addEventListener('scroll', () => {
+        requestAnimationFrame(() => {
+            const rect = bioText.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            
+            // Map the scroll progress perfectly
+            // Starts revealing when text is 85% down the screen
+            // Finishes fully revealing when it reaches 30% down the screen
+            const startReveal = windowHeight * 0.85;
+            const endReveal = windowHeight * 0.30;
+            
+            let progress = (startReveal - rect.top) / (startReveal - endReveal);
+            progress = Math.max(0, Math.min(1, progress)); // Clamp between 0 and 1
+            
+            const wordsToReveal = Math.floor(progress * wordSpans.length);
+            
+            wordSpans.forEach((span, index) => {
+                if (index < wordsToReveal) {
+                    span.classList.add('is-active');
+                } else {
+                    span.classList.remove('is-active');
+                }
+            });
+        });
+    }, { passive: true });
+}
+
+/*
+========================================
+LIVE TERMINAL TYPING EFFECT
+========================================
+*/
+function initTerminalTyping() {
+    const terminal = document.getElementById('about-terminal');
+    if (!terminal) return;
+    
+    const lines = terminal.querySelectorAll('.log-line:not(.terminal-pulse)');
+    if (lines.length === 0) return;
+
+    // 1. Store both the raw text and the HTML (for links)
+    lines.forEach(line => {
+        line.setAttribute('data-html', line.innerHTML);
+        line.setAttribute('data-text', line.textContent);
+        line.innerHTML = '';
+        line.style.opacity = '1'; 
+    });
+
+    // 2. Set up observer to trigger when scrolled into view
+    const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+            typeLines(lines);
+            observer.disconnect(); // Run only once
+        }
+    }, { threshold: 0.3 });
+    
+    observer.observe(terminal);
+}
+
+// 3. Type character by character, then snap links into place
+async function typeLines(lines) {
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const plainText = line.getAttribute('data-text');
+        const originalHTML = line.getAttribute('data-html');
+        
+        // Type the plain text rapidly
+        for (let j = 0; j < plainText.length; j++) {
+            line.innerHTML += plainText[j];
+            await new Promise(r => setTimeout(r, 10)); // 10ms per character
+        }
+        
+        // Once line is typed, swap in the real HTML to activate the clickable links
+        line.innerHTML = originalHTML;
+        
+        // Pause before typing the next line
+        await new Promise(r => setTimeout(r, 150)); 
+    }
+}
+
+/*
+========================================
+LIVE TELEMETRY CLOCK
+========================================
+*/
+function initClock() {
+    const clockElement = document.getElementById('live-clock');
+    if (!clockElement) return;
+
+    function updateTime() {
+        // Enforce IST (Indian Standard Time)
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('en-US', { 
+            timeZone: 'Asia/Kolkata',
+            hour12: true,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        
+        clockElement.innerText = `${timeString} IST`;
+    }
+
+    updateTime(); // Initial call
+    setInterval(updateTime, 1000); // Update every second
+}
+
+/*
+========================================
+LAB TERMINAL & DYNAMIC REGISTRY
+========================================
+*/
+function initLabTerminal() {
+    const fullscreenToggle = document.getElementById('fullscreen-toggle');
+    const terminalBody = document.getElementById('lab-terminal-body');
+    const registryContainer = document.getElementById('experiment-registry');
+    
+    // Target the entire grid to bring the menu into fullscreen too
+    const labGrid = document.querySelector('.lab__grid'); 
+
+    if (!fullscreenToggle || !registryContainer || !labGrid || typeof EXPERIMENTS_DATA === 'undefined') return;
+
+    // 1. Dynamically Generate the HTML List from information.js
+    EXPERIMENTS_DATA.forEach((exp, index) => {
+        const li = document.createElement('li');
+        li.className = 'experiment-item';
+        li.setAttribute('data-index', index);
+        
+        li.innerHTML = `
+            <span class="exp-id">${exp.id}</span>
+            <h3 class="exp-name">${exp.name}</h3>
+            <p class="exp-desc">${exp.description}</p>
+        `;
+        
+        registryContainer.appendChild(li);
+    });
+
+    const experimentItems = document.querySelectorAll('.experiment-item');
+
+    // 2. Native Browser Fullscreen API & Sidebar Toggle
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const customCursor = document.querySelector('.cursor'); // Ensure this matches your HTML!
+
+    fullscreenToggle.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+            // Push the ENTIRE document body into fullscreen so the cursor isn't left behind
+            document.documentElement.requestFullscreen().catch(err => {
+                console.error(`Error attempting to enable fullscreen: ${err.message}`);
+            });
+        } else {
+            document.exitFullscreen();
+        }
+    });
+
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', () => {
+            labGrid.classList.toggle('sidebar-open');
+        });
+    }
+
+    // Sync state with the ESC key and API state
+    document.addEventListener('fullscreenchange', () => {
+        if (document.fullscreenElement) {
+            labGrid.classList.add('is-fullscreen');
+            labGrid.classList.add('sidebar-open'); 
+            fullscreenToggle.innerText = '[ ✕ ] CLOSE';
+            
+            // Elevate cursor
+            if (customCursor) customCursor.classList.add('is-fullscreen-active');
+        } else {
+            // Remove fullscreen styles
+            labGrid.classList.remove('is-fullscreen');
+            labGrid.classList.remove('sidebar-open'); 
+            fullscreenToggle.innerText = '[ ↗ ] FULLSCREEN';
+            
+            // Drop cursor elevation
+            if (customCursor) customCursor.classList.remove('is-fullscreen-active');
+        }
+    });
+
+    // 3. Hover & Terminal Typing Logic
+    let activeExecutionId = 0; 
+
+    experimentItems.forEach(item => {
+        item.addEventListener('mouseenter', async () => {
+            experimentItems.forEach(el => el.classList.remove('is-active'));
+            item.classList.add('is-active');
+
+            const dataIndex = item.getAttribute('data-index');
+            const logs = EXPERIMENTS_DATA[dataIndex].logs;
+            
+            const currentExecutionId = ++activeExecutionId;
+            terminalBody.innerHTML = ''; 
+            
+            for (let i = 0; i < logs.length; i++) {
+                if (activeExecutionId !== currentExecutionId) return; 
+                
+                const p = document.createElement('p');
+                p.className = 'log-line';
+                terminalBody.appendChild(p);
+                
+                for (let j = 0; j < logs[i].length; j++) {
+                    if (activeExecutionId !== currentExecutionId) return; 
+                    p.innerHTML += logs[i][j];
+                    await new Promise(r => setTimeout(r, 10)); 
+                }
+                await new Promise(r => setTimeout(r, 150)); 
+            }
+        });
+    });
 }
