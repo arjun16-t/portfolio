@@ -104,3 +104,64 @@ const EXPERIMENTS_DATA = [
         ui: null
     }
 ];
+
+const TOOLKIT_DATA = [
+    // LANGUAGES
+    {
+        category: "LANGUAGES",
+        name: "Python",
+        role: "Core ML & Backend",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg"
+    },
+    {
+        category: "LANGUAGES",
+        name: "C++",
+        role: "DSA & Systems",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg"
+    },
+    // ML & AI
+    {
+        category: "AI / ML",
+        name: "PyTorch",
+        role: "Deep Learning",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pytorch/pytorch-original.svg"
+    },
+    {
+        category: "AI / ML",
+        name: "Jupyter",
+        role: "Data Exploration",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jupyter/jupyter-original.svg"
+    },
+    // BACKEND & SYSTEMS
+    {
+        category: "BACKEND",
+        name: "Django",
+        role: "API Architecture",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg"
+    },
+    {
+        category: "BACKEND",
+        name: "Redis",
+        role: "Caching & Queues",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg"
+    },
+    {
+        category: "BACKEND",
+        name: "PostgreSQL",
+        role: "Relational Database",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg"
+    },
+    // FRONTEND
+    {
+        category: "FRONTEND",
+        name: "Next.js",
+        role: "React Framework",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg"
+    },
+    {
+        category: "FRONTEND",
+        name: "Streamlit",
+        role: "Data Applications",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/streamlit/streamlit-original.svg"
+    }
+];

@@ -1247,3 +1247,200 @@ TRANSFORMING SOCIAL SIDEBAR (Updated)
 .floating-socials.is-docked .connect-text {
     display: inline-block;
 }
+
+/*
+========================================
+SYSTEM TOOLKIT GRID & CARDS
+========================================
+*/
+.toolkit {
+    padding: 0 0 8rem 0;
+    border-top: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.toolkit__header-wrapper {
+    position: relative;
+    width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+    display: flex;
+    z-index: 1;
+}
+
+.toolkit__container {
+    padding: 0 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+@media (min-width: 1024px) {
+    .toolkit__container {
+        padding: 0 3rem;
+    }
+}
+
+/* Tabs */
+.toolkit__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    justify-content: center;
+}
+
+.toolkit-tab-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 0.5rem 1.25rem;
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.toolkit-tab-btn:hover {
+    border-color: var(--accent-color);
+    color: var(--text-color);
+}
+
+.toolkit-tab-btn.is-active {
+    background: var(--text-color);
+    color: var(--bg-color);
+    border-color: var(--text-color);
+}
+
+/* Responsive Grid */
+.toolkit__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Spacious Cards (Reference Match) */
+.toolkit-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 2.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.toolkit-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-color);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.toolkit-card img {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1.5rem;
+    /* Optional: If you want icons to adapt strictly to your theme */
+    /* filter: grayscale(100%) opacity(0.8); */
+    transition: filter 0.3s ease;
+}
+
+.toolkit-card:hover img {
+    filter: grayscale(0%) opacity(1);
+}
+
+.toolkit-card__name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.25rem;
+    margin: 0 0 0.25rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-color);
+}
+
+.toolkit-card__role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0;
+}
+
+/*
+========================================
+TOOLKIT MICRO-INTERACTIONS
+========================================
+*/
+.toolkit-card {
+    position: relative;
+    overflow: hidden; /* Contains the spotlight strictly within the card */
+}
+
+/* Elevate text and images above the spotlight effect */
+.toolkit-card img,
+.toolkit-card__name,
+.toolkit-card__role {
+    position: relative;
+    z-index: 10;
+}
+
+/* 1. The Dynamic Spotlight */
+.toolkit-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    
+    /* Generates a soft glow at the exact mouse coordinates */
+    background: radial-gradient(
+        600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+        color-mix(in srgb, var(--accent-color) 12%, transparent), 
+        transparent 40%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.toolkit-card:hover::before {
+    opacity: 1; /* Lights up when hovered */
+}
+
+/* 2. The Hardware Bracket Snap */
+.toolkit-brackets {
+    position: absolute;
+    inset: 1.5rem; /* Creates a bounding box around the content */
+    pointer-events: none;
+    z-index: 20;
+}
+
+.bracket {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-color: var(--accent-color);
+    border-style: solid;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Spring-like easing */
+}
+
+/* Initial Expanded State (Pushed outward and invisible) */
+.bracket-tl { top: -20px; left: -20px; border-width: 2px 0 0 2px; }
+.bracket-tr { top: -20px; right: -20px; border-width: 2px 2px 0 0; }
+.bracket-bl { bottom: -20px; left: -20px; border-width: 0 0 2px 2px; }
+.bracket-br { bottom: -20px; right: -20px; border-width: 0 2px 2px 0; }
+
+/* Hover Snapped State (Moves into place and becomes visible) */
+.toolkit-card:hover .bracket {
+    opacity: 1;
+}
+.toolkit-card:hover .bracket-tl { top: 0; left: 0; }
+.toolkit-card:hover .bracket-tr { top: 0; right: 0; }
+.toolkit-card:hover .bracket-bl { bottom: 0; left: 0; }
+.toolkit-card:hover .bracket-br { bottom: 0; right: 0; }

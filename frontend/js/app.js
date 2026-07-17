@@ -69,7 +69,8 @@ function initApp() {
   initClock();
 
   initLabTerminal();
-  initSocialSidebar();
+
+  initToolkit();
 }
 
 /*
@@ -635,4 +636,85 @@ function initLabTerminal() {
             }
         });
     });
+}
+
+/*
+========================================
+SYSTEM TOOLKIT LOGIC
+========================================
+*/
+function initToolkit() {
+    const tabsContainer = document.getElementById('toolkit-tabs');
+    const gridContainer = document.getElementById('toolkit-grid');
+    
+    if (!tabsContainer || !gridContainer || typeof TOOLKIT_DATA === 'undefined') return;
+
+    // 1. Extract unique categories (Plus an "ALL" tab)
+    const categories = ["ALL", ...new Set(TOOLKIT_DATA.map(item => item.category))];
+    let currentCategory = "ALL";
+
+    // 2. Render Tabs
+    categories.forEach(category => {
+        const btn = document.createElement('button');
+        btn.className = `toolkit-tab-btn ${category === "ALL" ? "is-active" : ""}`;
+        btn.innerText = category;
+        
+        btn.addEventListener('click', () => {
+            // Update active state
+            document.querySelectorAll('.toolkit-tab-btn').forEach(b => b.classList.remove('is-active'));
+            btn.classList.add('is-active');
+            
+            // Re-render grid
+            currentCategory = category;
+            renderGrid();
+        });
+        
+        tabsContainer.appendChild(btn);
+    });
+
+    // 3. Render Grid Function
+    function renderGrid() {
+        gridContainer.innerHTML = '';
+        
+        const filteredData = currentCategory === "ALL" 
+            ? TOOLKIT_DATA 
+            : TOOLKIT_DATA.filter(item => item.category === currentCategory);
+
+        filteredData.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'toolkit-card';
+            
+            // Injected the 4 target brackets into the card's HTML
+            card.innerHTML = `
+                <div class="toolkit-brackets">
+                    <span class="bracket bracket-tl"></span>
+                    <span class="bracket bracket-tr"></span>
+                    <span class="bracket bracket-bl"></span>
+                    <span class="bracket bracket-br"></span>
+                </div>
+                <img src="${item.logo}" alt="${item.name} logo">
+                <h4 class="toolkit-card__name">${item.name}</h4>
+                <p class="toolkit-card__role">${item.role}</p>
+            `;
+            gridContainer.appendChild(card);
+        });
+
+        // Spotlight Mouse Tracking Logic
+        const cards = gridContainer.querySelectorAll('.toolkit-card');
+        
+        // Attaching it to the grid container allows the light to "bleed" 
+        // into adjacent cards slightly, creating a highly realistic glow effect
+        gridContainer.addEventListener('mousemove', (e) => {
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    }
+
+    // Initial render
+    renderGrid();
 }
