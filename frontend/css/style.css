@@ -1217,13 +1217,15 @@ TRANSFORMING SOCIAL SIDEBAR (Updated)
 */
 .floating-socials {
     position: fixed;
-    bottom: 2.5rem; /* Pinned to bottom */
-    right: 2rem;    /* Pinned to right */
+    bottom: 2.5rem; 
+    right: 2rem;    
     display: flex;
     flex-direction: column; 
     gap: 1.5rem;
     z-index: 9000;
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+    transform: translateX(0);
 }
 
 /* Make the icons significantly larger */
@@ -1236,16 +1238,10 @@ TRANSFORMING SOCIAL SIDEBAR (Updated)
     display: none;
 }
 
-/* Docked horizontal state when reaching the footer */
-.floating-socials.is-docked {
-    bottom: 2.5rem;
-    right: 3rem; 
-    flex-direction: row; 
-    gap: 1.5rem;
-}
-
-.floating-socials.is-docked .connect-text {
-    display: inline-block;
+.floating-socials.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(20px);
 }
 
 /*
@@ -1694,4 +1690,146 @@ UNIFIED SCROLL SNAP (TIMELINE & CREDENTIALS)
 .credential-verify-btn:hover {
     background: var(--accent-color);
     color: var(--bg-color);
+}
+
+/*
+========================================
+SYSTEM FOOTER
+========================================
+*/
+.site-footer {
+    border-top: 1px solid var(--border-color);
+    background-color: color-mix(in srgb, var(--bg-color) 95%, var(--accent-color));
+    padding: 6rem 1.5rem 4rem 1.5rem;
+    position: relative;
+    z-index: 10;
+}
+
+.footer__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+@media (min-width: 1024px) {
+    .footer__grid {
+        grid-template-columns: 1fr 2fr 1fr; /* Center column is twice as wide */
+        gap: 2rem;
+    }
+}
+
+/* Meta Data Columns (Left & Right) */
+.footer__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+@media (min-width: 1024px) {
+    .footer__meta--right {
+        text-align: right;
+        align-items: flex-end;
+    }
+}
+
+.meta-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.meta-value {
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+.time-value {
+    color: var(--accent-color);
+}
+
+/* Center Terminal Note */
+.footer__center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.terminal-note {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    /* Slight rotation for that organic "card" feel from your reference */
+    transform: rotate(-1deg); 
+    transition: transform 0.3s ease;
+}
+
+.terminal-note:hover {
+    transform: rotate(0deg) translateY(-5px);
+}
+
+.terminal-note__header {
+    background-color: color-mix(in srgb, var(--bg-color) 60%, transparent);
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.terminal-note__body {
+    padding: 2rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.terminal-note__body p {
+    margin: 0 0 0.5rem 0;
+}
+
+/* Social Keycaps */
+.footer__socials {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.footer-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.25rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    /* Mimic mechanical keyboard keys */
+    box-shadow: 0 4px 0 var(--border-color); 
+}
+
+.footer-btn:hover {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 var(--border-color);
+    color: var(--text-color);
+    border-color: var(--text-color);
+}
+
+.footer-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 var(--border-color);
 }

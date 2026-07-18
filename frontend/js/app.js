@@ -61,6 +61,7 @@ function initApp() {
     initTheme();
     initNavbar();
     initTicker();
+    initSocialSidebar();
     initScrambleEffect();
 
     initAboutTabs();
@@ -280,6 +281,45 @@ function applyTheme(theme) {
         ? "System Mode: Deep Space" 
         : "System Mode: E-Ink";
   }
+}
+
+/*
+========================================
+TRANSFORMING SOCIAL SIDEBAR OBSERVER
+========================================
+*/
+function initSocialSidebar() {
+    const sidebar = document.getElementById('social-sidebar');
+    const hero = document.querySelector('.hero');
+    const footer = document.getElementById('footer');
+    
+    if (!sidebar || !hero || !footer) return;
+
+    let isHeroVisible = true; // Assume true on initial load
+    let isFooterVisible = false;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.target === hero) {
+                isHeroVisible = entry.isIntersecting;
+            }
+            if (entry.target === footer) {
+                isFooterVisible = entry.isIntersecting;
+            }
+        });
+
+        // Hide the sidebar if the user is in the Hero OR the Footer
+        if (isHeroVisible || isFooterVisible) {
+            sidebar.classList.add('is-hidden');
+        } else {
+            sidebar.classList.remove('is-hidden');
+        }
+    }, { 
+        threshold: 0.05 // Triggers as soon as 5% of the section is visible
+    });
+
+    observer.observe(hero);
+    observer.observe(footer);
 }
 
 /*
@@ -606,11 +646,10 @@ LIVE TELEMETRY CLOCK
 ========================================
 */
 function initClock() {
-    const clockElement = document.getElementById('live-clock');
-    if (!clockElement) return;
+    const clockElements = document.querySelectorAll('.clock-element, #live-clock');
+    if (clockElements.length === 0) return;
 
     function updateTime() {
-        // Enforce IST (Indian Standard Time)
         const now = new Date();
         const timeString = now.toLocaleTimeString('en-US', { 
             timeZone: 'Asia/Kolkata',
@@ -620,7 +659,9 @@ function initClock() {
             second: '2-digit'
         });
         
-        clockElement.innerText = `${timeString} IST`;
+        clockElements.forEach(el => {
+            el.innerText = `${timeString} IST`;
+        });
     }
 
     updateTime(); // Initial call
