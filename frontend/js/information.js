@@ -165,3 +165,43 @@ const TOOLKIT_DATA = [
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/streamlit/streamlit-original.svg"
     }
 ];
+
+// Add these to information.js
+
+const EXPERIENCE_DATA = [
+    {
+        role: "Machine Learning Intern",
+        company: "TechNova Solutions",
+        date: "May 2025 - Present",
+        description: [
+            "Developed and deployed a scalable RAG application using Django and Qdrant.",
+            "Optimized data pipeline latency by 30% through Celery background tasks.",
+            "Collaborated with cross-functional teams to integrate predictive models into production."
+        ]
+    },
+    {
+        role: "AI Developer Intern",
+        company: "DataSphere Systems",
+        date: "Jan 2025 - Apr 2025",
+        description: [
+            "Trained and fine-tuned Transformer models for time-series forecasting.",
+            "Engineered distributed task queues to handle high-throughput data processing.",
+            "Participated in weekly code reviews and architecture planning sessions."
+        ]
+    }
+];
+
+const CREDENTIALS_DATA = [
+    {
+        date: "2026",
+        title: "Deep Learning Specialization",
+        issuer: "DeepLearning.AI",
+        link: "#"
+    },
+    {
+        date: "2025",
+        title: "AWS Certified Cloud Practitioner",
+        issuer: "Amazon Web Services",
+        link: "#"
+    }
+];

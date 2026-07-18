@@ -1444,3 +1444,254 @@ TOOLKIT MICRO-INTERACTIONS
 .toolkit-card:hover .bracket-tr { top: 0; right: 0; }
 .toolkit-card:hover .bracket-bl { bottom: 0; left: 0; }
 .toolkit-card:hover .bracket-br { bottom: 0; right: 0; }
+
+/*
+========================================
+PROFESSIONAL ABOUT INTERFACE
+========================================
+*/
+.about-interface {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.about-tabs {
+    display: flex;
+    gap: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.about-tab-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.about-tab-btn:hover {
+    color: var(--text-color);
+}
+
+.about-tab-btn.is-active {
+    color: var(--accent-color);
+}
+
+.about-tab-btn.is-active::after {
+    content: '';
+    position: absolute;
+    bottom: -0.6rem;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent-color);
+}
+
+/* Fixed Content Window for internal scrolling */
+.about-content-window {
+    height: 50vh; /* Keeps the screen fixed while content scrolls */
+    min-height: 400px;
+    position: relative;
+    overflow: hidden;
+}
+
+.about-pane {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    overflow-y: auto; /* Allow internal scrolling */
+    
+    /* Hide scrollbars for clean look */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.about-pane::-webkit-scrollbar {
+    display: none;
+}
+
+.about-pane.is-active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.professional-bio {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.1rem, 1.5vw, 1.5rem);
+    line-height: 1.6;
+    font-weight: 400;
+    margin: 0;
+    color: var(--text-color);
+}
+
+/*
+========================================
+UNIFIED SCROLL SNAP (TIMELINE & CREDENTIALS)
+========================================
+*/
+.timeline-snap-container,
+.credentials-snap-container {
+    height: 100%;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory; 
+    scroll-behavior: smooth;
+    display: flex;
+    flex-direction: column;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    
+    /* Adds blank scrolling runway so the first and last items can reach the center */
+    padding: 25vh 0; 
+}
+
+.timeline-snap-container::-webkit-scrollbar,
+.credentials-snap-container::-webkit-scrollbar {
+    display: none;
+}
+
+.timeline-item {
+    scroll-snap-align: center; /* Snaps to the center instead of the top */
+    flex-shrink: 0;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    
+    /* Reduced padding to bring certificates and experiences closer together */
+    padding: 2rem 0 2rem 3rem; 
+    position: relative;
+
+    /* Unfocused State (Faded) */
+    opacity: 0.25;
+    transition: opacity 0.5s ease;
+}
+
+/* Focused State (Activated via JS Intersection Observer) */
+.timeline-item.is-active {
+    opacity: 1;
+}
+
+/* 1. The Continuous Vertical Line */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0.5rem; 
+    width: 2px;
+    background-color: var(--border-color);
+}
+
+.timeline-item:first-child::before {
+    top: 50%;
+}
+.timeline-item:last-child::before {
+    bottom: 50%;
+}
+
+/* 2. The Timeline Node (Dot) */
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0.1rem; 
+    width: 14px;
+    height: 14px;
+    
+    /* Unfocused Node State (Dim and Hollow) */
+    background-color: var(--bg-color);
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    box-shadow: none;
+    transition: all 0.4s ease;
+}
+
+/* Focused Node State (Glowing Accent Color) */
+.timeline-item.is-active::after {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px var(--accent-color);
+}
+
+/* 3. Typography Formatting */
+.timeline-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.timeline-role {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2rem;
+    margin: 0 0 0.5rem 0;
+    color: var(--text-color);
+    text-transform: uppercase;
+}
+
+.timeline-company {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin: 0 0 2rem 0;
+}
+
+.timeline-desc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 90%;
+}
+
+.timeline-desc li {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    position: relative;
+    padding-left: 1.5rem;
+    line-height: 1.6;
+}
+
+.timeline-desc li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--accent-color);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* 4. Unified Button Styling */
+.credential-verify-btn {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent-color);
+    text-decoration: none;
+    border: 1px solid var(--accent-color);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.credential-verify-btn:hover {
+    background: var(--accent-color);
+    color: var(--bg-color);
+}

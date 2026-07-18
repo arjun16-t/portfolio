@@ -222,11 +222,39 @@
                     </div>
                 </div>
 
-                <!-- Right Column: Clean Uppercase Bio -->
+                <!-- Right Column: Professional Tabbed Interface -->
                 <div class="about__right">
-                    <p class="scroll-bio-text" id="scroll-bio">
-                        I am an engineering student specializing in Artificial Intelligence and Machine Learning, driven by a focus on end-to-end system architecture. Instead of just training models in isolated environments, I build the scalable backends required to deploy them. From developing multi-tenant RAG applications to engineering distributed task queues and predictive pipelines, my goal is to bridge the gap between complex raw data and robust, production-ready software.
-                    </p>
+                    <div class="about-interface">
+                        
+                        <!-- Tab Controls -->
+                        <div class="about-tabs" id="about-tabs">
+                            <button class="about-tab-btn is-active" data-target="overview">OVERVIEW</button>
+                            <button class="about-tab-btn" data-target="experience">EXPERIENCE</button>
+                            <button class="about-tab-btn" data-target="credentials">CREDENTIALS</button>
+                        </div>
+
+                        <!-- Content Window -->
+                        <div class="about-content-window" id="about-content-window">
+                            
+                            <!-- 1. OVERVIEW TAB -->
+                            <div class="about-pane is-active" id="pane-overview">
+                                <p class="professional-bio">
+                                    I am an engineering student specializing in Artificial Intelligence and Machine Learning, driven by a focus on end-to-end system architecture. Instead of just training models in isolated environments, I build the scalable backends required to deploy them. From developing multi-tenant RAG applications to engineering distributed task queues and predictive pipelines, my goal is to bridge the gap between complex raw data and robust, production-ready software.
+                                </p>
+                            </div>
+
+                            <!-- 2. EXPERIENCE TAB (Injected via JS) -->
+                            <div class="about-pane" id="pane-experience">
+                                <div class="timeline-snap-container" id="timeline-container"></div>
+                            </div>
+
+                            <!-- 3. CREDENTIALS TAB (Injected via JS) -->
+                            <div class="about-pane" id="pane-credentials">
+                                <div class="credentials-snap-container" id="credentials-container"></div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -336,6 +364,8 @@
                 <div class="toolkit__grid" id="toolkit-grid"></div>
             </div>
         </section>
+
+
 
         <!-- FLOATING SOCIAL SIDEBAR (Place this near the end of your <body>) -->
         <aside class="floating-socials" id="social-sidebar">

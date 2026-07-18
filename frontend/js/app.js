@@ -57,20 +57,21 @@ INITIALIZATION
 document.addEventListener("DOMContentLoaded", initApp);
 
 function initApp() {
-  initCursor();
-  initTheme();
-  initNavbar();
-  initTicker();
-  initScrambleEffect();
+    initCursor();
+    initTheme();
+    initNavbar();
+    initTicker();
+    initScrambleEffect();
 
-  initTerminal();
-  initTerminalTyping();
-  initScrollReveal();
-  initClock();
+    initAboutTabs();
+    initTerminal();
+    initTerminalTyping();
+    initScrollReveal();
+    initClock();
 
-  initLabTerminal();
+    initLabTerminal();
 
-  initToolkit();
+    initToolkit();
 }
 
 /*
@@ -379,6 +380,99 @@ function runScramble(element, chars) {
         // Increase iteration (lower number = slower reveal)
         iteration += 0.5; 
     }, 30); // Runs every 30ms
+}
+
+/*
+========================================
+ABOUT TABS & DATA INJECTION
+========================================
+*/
+function initAboutTabs() {
+    const tabBtns = document.querySelectorAll('.about-tab-btn');
+    const panes = document.querySelectorAll('.about-pane');
+    const timelineContainer = document.getElementById('timeline-container');
+    const credentialsContainer = document.getElementById('credentials-container');
+
+    if (!tabBtns.length || !timelineContainer || !credentialsContainer) return;
+
+    // 1. Tab Switching Logic
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-target');
+
+            // Reset active states
+            tabBtns.forEach(b => b.classList.remove('is-active'));
+            panes.forEach(p => p.classList.remove('is-active'));
+
+            // Set new active states
+            btn.classList.add('is-active');
+            document.getElementById(`pane-${target}`).classList.add('is-active');
+        });
+    });
+
+    // 2. Inject Experience Data
+    if (typeof EXPERIENCE_DATA !== 'undefined') {
+        EXPERIENCE_DATA.forEach(exp => {
+            const item = document.createElement('div');
+            item.className = 'timeline-item';
+            
+            const descList = exp.description.map(d => `<li>${d}</li>`).join('');
+
+            item.innerHTML = `
+                <span class="timeline-date">${exp.date}</span>
+                <h3 class="timeline-role">${exp.role}</h3>
+                <p class="timeline-company">${exp.company}</p>
+                <ul class="timeline-desc">
+                    ${descList}
+                </ul>
+            `;
+            timelineContainer.appendChild(item);
+        });
+    }
+
+    // 3. Inject Credentials Data
+    if (typeof CREDENTIALS_DATA !== 'undefined') {
+        CREDENTIALS_DATA.forEach(cred => {
+            const item = document.createElement('div');
+            item.className = 'timeline-item';
+            
+            item.innerHTML = `
+                <span class="timeline-date">${cred.date}</span>
+                <h3 class="timeline-role">${cred.title}</h3>
+                <p class="timeline-company">> ISSUER: ${cred.issuer}</p>
+                <div style="margin-top: 1rem;">
+                    <a href="${cred.link}" target="_blank" class="credential-verify-btn">[↗] VERIFY_CERT</a>
+                </div>
+            `;
+            credentialsContainer.appendChild(item);
+        });
+    }
+
+    // 4. Center-Focus Intersection Observer
+    // Applies to both the Timeline and Credentials containers
+    const scrollContainers = [timelineContainer, credentialsContainer];
+    
+    scrollContainers.forEach(container => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-active');
+                } else {
+                    entry.target.classList.remove('is-active');
+                }
+            });
+        }, {
+            root: container,
+            // Triggers specifically when the item hits the middle 10% of the scroll window
+            rootMargin: '-45% 0px -45% 0px', 
+            threshold: 0
+        });
+
+        // Observe every generated item inside the container
+        container.querySelectorAll('.timeline-item').forEach(item => {
+            observer.observe(item);
+        });
+    });
 }
 
 /*
