@@ -60,6 +60,7 @@ function initApp() {
     initCursor();
     initTheme();
     initNavbar();
+    initScrollSpy();
     initTicker();
     initSocialSidebar();
     initScrambleEffect();
@@ -197,6 +198,42 @@ function renderCursor() {
     }
 
     requestAnimationFrame(renderCursor);
+}
+
+/*
+========================================
+SCROLL SPY (NAVBAR HIGHLIGHTING)
+========================================
+*/
+function initScrollSpy() {
+    // Select all main sections that have an ID
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.navbar__link');
+
+    if (!sections.length || !navLinks.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const currentId = entry.target.getAttribute('id');
+                
+                // Remove active class from all links
+                navLinks.forEach(link => {
+                    link.classList.remove('is-active');
+                    // Add active class if the link's href matches the current section ID
+                    if (link.getAttribute('href') === `#${currentId}`) {
+                        link.classList.add('is-active');
+                    }
+                });
+            }
+        });
+    }, {
+        // Triggers when a section crosses the middle of the viewport
+        rootMargin: '-40% 0px -60% 0px', 
+        threshold: 0
+    });
+
+    sections.forEach(section => observer.observe(section));
 }
 
 /*
