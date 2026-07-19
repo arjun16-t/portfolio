@@ -46,6 +46,24 @@ Powered by Three.js & Custom GLSL Shaders
 
         window.addEventListener('resize', onWindowResize);
 
+        // THEME SYNC: Dynamically update GPU uniforms when the theme changes
+        const themeBtn = document.getElementById('theme-toggle');
+        if (themeBtn) {
+            themeBtn.addEventListener('click', () => {
+                // Wait 50ms to ensure app.js has already toggled the 'theme-e-ink' class on the body
+                setTimeout(() => {
+                    if (particles) {
+                        const isEInk = document.body.classList.contains('theme-e-ink');
+                        const newColor = isEInk ? '#9c4221' : '#c3fffc';
+                        
+                        // Push the new color directly to the GPU
+                        particles.material.uniforms.uColorBase.value.set(newColor);
+                        particles.material.uniforms.uColorHover.value.set(newColor);
+                    }
+                }, 50);
+            });
+        }
+
         loadImageData();
     }
 
@@ -136,8 +154,8 @@ Powered by Three.js & Custom GLSL Shaders
             uniforms: {
                 uMouse: { value: new THREE.Vector2(-1000, -1000) },
                 uScroll: { value: 0.0 },
-                uColorBase: { value: new THREE.Color('#2c4343') },
-                uColorHover: { value: new THREE.Color('#c3fffc') },
+                uColorBase: { value: new THREE.Color(document.body.classList.contains('theme-e-ink') ? '#9c4221' : '#c3fffc') },
+                uColorHover: { value: new THREE.Color(document.body.classList.contains('theme-e-ink') ? '#9c4221' : '#c3fffc') },
                 uKernelSize: { value: 60.0 } // Smaller, focused convolution window
             },
             vertexShader: vertexShader(),
@@ -202,7 +220,7 @@ Powered by Three.js & Custom GLSL Shaders
                 vec4 mvPosition = modelViewMatrix * vec4(targetPos, 1.0);
                 
                 // SIZE LOGIC
-                gl_PointSize = mix(3.0, 4.0, inside);
+                gl_PointSize = mix(1.5, 3.0, inside);
 
                 // COLOR & ALPHA LOGIC
                 vColor = mix(uColorBase, aColor, inside);

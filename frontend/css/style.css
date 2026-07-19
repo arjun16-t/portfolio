@@ -3,69 +3,62 @@
 RESET
 ========================================
 */
-*, *::before, *::after {
-    box-sizing: border-box;
+@layer reset, theme, base;
+
+@layer reset {
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+    }
 }
 
-body {
-    margin: 0;
+@layer theme {
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #ffffff;
+        --text-muted: #9ca3af;
+        --accent-color: #c3fffc;
+        --card-bg: #171717;
+        --border-color: #262626;
+    }
+
+    body.theme-e-ink {
+        --bg-color: #eae7dc;
+        --text-color: #2a2824;
+        --text-muted: #726c5e;
+        --accent-color: #9c4221;
+        --card-bg: #ded9c9;
+        --border-color: #cfc9b8;
+    }
 }
 
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
 
-/*
-========================================
-THEME VARIABLES (Deep Space vs E-Ink)
-========================================
-*/
-:root {
-    --bg-color: #0a0a0a;
-    --text-color: #ffffff;
-    --text-muted: #9ca3af;
-    --accent-color: #c3fffc;
-    --card-bg: #171717;
-    --border-color: #262626;
-}
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.4s ease, color 0.4s ease;
 
-body.theme-e-ink {
-    /* Muted, warm "paper" tone instead of a clean off-white,
-       and a desaturated rust accent instead of a saturated
-       vermillion — real e-ink panels can't render vivid color. */
-    --bg-color: #eae7dc;
-    --text-color: #2a2824;
-    --text-muted: #726c5e;
-    --accent-color: #9c4221;
-    --card-bg: #ded9c9;
-    --border-color: #cfc9b8;
-}
+        background-image: 
+            linear-gradient(color-mix(in srgb, var(--text-muted) 15%, transparent) 1px, transparent 1px),
+            linear-gradient(90deg, color-mix(in srgb, var(--text-muted) 15%, transparent) 1px, transparent 1px),
+            linear-gradient(color-mix(in srgb, var(--text-muted) 6%, transparent) 1px, transparent 1px),
+            linear-gradient(90deg, color-mix(in srgb, var(--text-muted) 6%, transparent) 1px, transparent 1px);
+        background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+        background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
+        background-attachment: scroll;
+    }
 
-/*
-========================================
-BASE STYLES
-========================================
-*/
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    transition: background-color 0.4s ease, color 0.4s ease;
-
-    background-image: 
-        linear-gradient(color-mix(in srgb, var(--text-muted) 15%, transparent) 1px, transparent 1px),
-        linear-gradient(90deg, color-mix(in srgb, var(--text-muted) 15%, transparent) 1px, transparent 1px),
-        linear-gradient(color-mix(in srgb, var(--text-muted) 6%, transparent) 1px, transparent 1px),
-        linear-gradient(90deg, color-mix(in srgb, var(--text-muted) 6%, transparent) 1px, transparent 1px);
-    background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
-    background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
-    background-attachment: scroll;
-}
-
-/* Custom terminal-style text selection */
-::selection {
-    background-color: var(--accent-color);
-    color: var(--bg-color);
+    ::selection {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+    }
 }
 
 /*
@@ -113,11 +106,7 @@ body.is-scrolled nav {
 STICKY CARDS (For the Work Section)
 ========================================
 */
-.project-card {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.4s ease, border-color 0.4s ease;
-}
+
 
 /*
 ========================================
@@ -355,8 +344,8 @@ NAVBAR
     bottom: 0;
     left: 0;
     height: 2px;
-    background-color: var(--accent-color);
     width: 0%;
+    background-color: var(--accent-color);
     will-change: width;
     z-index: 51;
 }
@@ -525,6 +514,8 @@ STICKY CARDS LAYOUT (SPLIT DESIGN)
     gap: 2rem;
     
     box-shadow: 0 -15px 40px -20px rgba(0,0,0,0.9);
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.4s ease, border-color 0.4s ease;
 }
 
 /* 
@@ -955,7 +946,10 @@ LAB TERMINAL & FULLSCREEN MODE
     height: 500px; /* Fixed height for dashboard feel */
     display: flex;
     flex-direction: column;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+        transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.5s ease,
+        background-color 0.5s ease;
 }
 
 .lab-terminal .terminal__body {
@@ -1103,7 +1097,10 @@ TERMINAL WINDOW UI (Restored)
     font-family: inherit;
     font-size: 0.7rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
 }
 
 .terminal__toggle:hover {
@@ -1275,9 +1272,11 @@ TRANSFORMING SOCIAL SIDEBAR (Updated)
     flex-direction: column; 
     gap: 1.5rem;
     z-index: 9000;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 1;
     transform: translateX(0);
+    transition:
+        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.4s ease;
 }
 
 /* Make the icons significantly larger */
@@ -1348,7 +1347,10 @@ SYSTEM TOOLKIT GRID & CARDS
     font-size: 0.85rem;
     text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease;
 }
 
 .toolkit-tab-btn:hover {
@@ -1475,7 +1477,12 @@ TOOLKIT MICRO-INTERACTIONS
     border-color: var(--accent-color);
     border-style: solid;
     opacity: 0;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Spring-like easing */
+    transition:
+        top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        opacity 0.4s ease;
 }
 
 /* Initial Expanded State (Pushed outward and invisible) */
@@ -1666,7 +1673,10 @@ UNIFIED SCROLL SNAP (TIMELINE & CREDENTIALS)
     border: 2px solid var(--border-color);
     border-radius: 50%;
     box-shadow: none;
-    transition: all 0.4s ease;
+    transition:
+        background-color 0.4s ease,
+        border-color 0.4s ease,
+        box-shadow 0.4s ease;
 }
 
 /* Focused Node State (Glowing Accent Color) */
@@ -1735,8 +1745,8 @@ UNIFIED SCROLL SNAP (TIMELINE & CREDENTIALS)
     border: 1px solid var(--accent-color);
     padding: 0.5rem 1rem;
     border-radius: 4px;
-    transition: all 0.3s ease;
     text-transform: uppercase;
+    transition: all 0.3s ease;
 }
 
 .credential-verify-btn:hover {
@@ -1869,9 +1879,12 @@ SYSTEM FOOTER
     font-size: 0.85rem;
     color: var(--text-muted);
     text-decoration: none;
-    transition: all 0.3s ease;
-    /* Mimic mechanical keyboard keys */
     box-shadow: 0 4px 0 var(--border-color); 
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.3s ease;
 }
 
 .footer-btn:hover {
