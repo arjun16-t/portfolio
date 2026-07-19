@@ -30,15 +30,17 @@ const FEATURED_WORK = [
 const EXPERIMENTS_DATA = [
     {
         id: "PROJ_01",
-        name: "AthenaChat - Chatbot-As-A-Service",
+        name: "AthenaChat: Chatbot-As-A-Service",
         type: "interactive",
-        description: "LSTM, GRU, and Transformer models for Indian market prediction.",
+        description: "Designed a chatbot-as-a-service platform with a Django REST backend, Qdrant vector store, and Groq-powered LLM inference, architected for multi-client deployment with isolated knowledge bases per tenant",
         logs: [
-            "> python run_predictor.py --model transformer --target NSE",
-            "[ INFO ] Loading historical tick data...",
-            "[ INFO ] Initializing multi-head attention blocks...",
-            "[ SUCCESS ] Model converged. MSE: 0.042",
-            "[ OUTPUT ] Predictor ready. Awaiting ticker input..."
+            "> python manage.py runserver",
+            "> celery -A config worker --loglevel=info --concurrency=1",
+            "[ INFO ] Loading Embedding Models...",
+            "[ INFO ] Connecting to Qdrant Client...",
+            "[ INFO ] Initializing RAG Pipeline...",
+            "[ SUCCESS ] Logged in as Arjun and Fetched Documents",
+            "[ OUTPUT ] Chatbot ready. Awaiting questions..."
         ],
         ui: `
             <div class="terminal-ui-block mt-4">
@@ -145,6 +147,24 @@ const TOOLKIT_DATA = [
         role: "DSA & Systems",
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg"
     },
+    {
+        category: "LANGUAGES",
+        name: "C",
+        role: "DSA",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg"
+    },
+    {
+        category: "LANGUAGES",
+        name: "Java",
+        role: "Algorithms",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg"
+    },
+    {
+        category: "LANGUAGES",
+        name: "JavaScript",
+        role: "Frontend & Web Dev",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg"
+    },
     // ML & AI
     {
         category: "AI / ML",
@@ -154,9 +174,39 @@ const TOOLKIT_DATA = [
     },
     {
         category: "AI / ML",
+        name: "Tensorflow",
+        role: "Deep Learning - Research",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tensorflow/tensorflow-original.svg"
+    },
+    {
+        category: "AI / ML",
+        name: "Scikit-Learn",
+        role: "Machine Learning",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/scikitlearn/scikitlearn-original.svg"
+    },
+    {
+        category: "AI / ML",
         name: "Jupyter",
         role: "Data Exploration",
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jupyter/jupyter-original.svg"
+    },
+    {
+        category: "AI / ML",
+        name: "Google Colab",
+        role: "Model Training",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/googlecolab/googlecolab-original.svg"
+    },
+    {
+        category: "AI / ML",
+        name: "LangChain",
+        role: "Data Exploration",
+        logo: "./assets/images/icons/langchain.svg"
+    },
+    {
+        category: "AI / ML",
+        name: "Hugging Face",
+        role: "Transformers",
+        logo: "./assets/images/icons/huggingface.svg"
     },
     // BACKEND & SYSTEMS
     {
@@ -164,6 +214,18 @@ const TOOLKIT_DATA = [
         name: "Django",
         role: "API Architecture",
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg"
+    },
+    {
+        category: "BACKEND",
+        name: "Django Rest Framework",
+        role: "RESTful API",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/djangorest/djangorest-plain.svg"
+    },
+    {
+        category: "BACKEND",
+        name: "FastAPI",
+        role: "Model Deployment",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-plain.svg"
     },
     {
         category: "BACKEND",
@@ -177,12 +239,36 @@ const TOOLKIT_DATA = [
         role: "Relational Database",
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg"
     },
+    {
+        category: "BACKEND",
+        name: "Git",
+        role: "Version Management",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg"
+    },
+    {
+        category: "BACKEND",
+        name: "GitHub",
+        role: "Version Management System",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg"
+    },
+    {
+        category: "BACKEND",
+        name: "Postman",
+        role: "API Testing",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg"
+    },
     // FRONTEND
     {
         category: "FRONTEND",
-        name: "Next.js",
-        role: "React Framework",
-        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg"
+        name: "Netlify",
+        role: "Static Deployment",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/netlify/netlify-original.svg"
+    },
+    {
+        category: "FRONTEND",
+        name: "Railway",
+        role: "CI/CD & Deployment",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/railway/railway-original.svg"
     },
     {
         category: "FRONTEND",
@@ -196,38 +282,69 @@ const TOOLKIT_DATA = [
 
 const EXPERIENCE_DATA = [
     {
-        role: "Machine Learning Intern",
-        company: "TechNova Solutions",
+        role: "Freelancer",
+        company: "Freelancer",
         date: "May 2025 - Present",
         description: [
+            "Deployed website using HTML/CSS/Vanilla JS for client",
             "Developed and deployed a scalable RAG application using Django and Qdrant.",
-            "Optimized data pipeline latency by 30% through Celery background tasks.",
-            "Collaborated with cross-functional teams to integrate predictive models into production."
         ]
     },
-    {
-        role: "AI Developer Intern",
-        company: "DataSphere Systems",
-        date: "Jan 2025 - Apr 2025",
-        description: [
-            "Trained and fine-tuned Transformer models for time-series forecasting.",
-            "Engineered distributed task queues to handle high-throughput data processing.",
-            "Participated in weekly code reviews and architecture planning sessions."
-        ]
-    }
 ];
 
 const CREDENTIALS_DATA = [
     {
         date: "2026",
-        title: "Deep Learning Specialization",
-        issuer: "DeepLearning.AI",
-        link: "#"
+        title: "Introduction to PyTorch",
+        issuer: "IBM",
+        link: "./assets/images/certificates/pytorch.pdf"
     },
     {
         date: "2025",
-        title: "AWS Certified Cloud Practitioner",
-        issuer: "Amazon Web Services",
-        link: "#"
-    }
+        title: "Introduction to Neural Network with TensorFlow & Keras",
+        issuer: "IBM",
+        link: "./assets/images/certificates/keras.pdf"
+    },
+    {
+        date: "2025",
+        title: "RH104 - Getting Started with Linux",
+        issuer: "RedHat",
+        link: "./assets/images/certificates/rh104-linux.pdf"
+    },
+    {
+        date: "2025",
+        title: "Fundamentals of MCP",
+        issuer: "HuggingFace",
+        link: "./assets/images/certificates/mcp.webp"
+    },
+    {
+        date: "2025",
+        title: "Retrieval Augmented Generation",
+        issuer: "DeepLearning.AI",
+        link: "./assets/images/certificates/rag.pdf"
+    }, 
+    {
+        date: "2025",
+        title: "Vector Databases",
+        issuer: "IBM",
+        link: "./assets/images/certificates/vectordb.pdf"
+    }, 
+    {
+        date: "2025",
+        title: "Django Web Framework",
+        issuer: "Meta",
+        link: "./assets/images/certificates/django.pdf"
+    },
+    {
+        date: "2025",
+        title: "Introduction to Java",
+        issuer: "University of Penn",
+        link: "./assets/images/certificates/java.pdf"
+    },
+    {
+        date: "2024",
+        title: "C++ Programming",
+        issuer: "Udemy",
+        link: "./assets/images/certificates/cplusplus.jpg"
+    },
 ];
