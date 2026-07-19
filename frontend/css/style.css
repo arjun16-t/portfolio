@@ -1,64 +1,148 @@
 /*
 ========================================
+TABLE OF CONTENTS
+
+  1.  Reset
+  2.  Theme Variables (Deep Space vs E-Ink)
+  3.  Design Tokens (Radius & Transition Timing)
+  4.  Base Styles
+  5.  Typography Effects (Juba Style)
+  6.  Navbar Scroll State
+  7.  Sticky Cards (For the Work Section) — early transition-only rule
+  8.  Computer Vision Cursor
+  9.  Breakpoint Reference (for this project)
+  10. Global Layout
+  11. Particle Canvas
+  12. WebGL Particle Container
+  13. Navbar
+  14. Hero
+  15. Work Section & Typography
+  16. Sticky Cards Layout (Split Design)
+  17. About Section & Grid
+  18. Orbital Resume Badge
+  19. Scroll Reveal Bio (Normal Paragraph)
+  20. About Bottom Row (Telemetry & Links)
+  21. Experiment Lab Grid
+  22. Lab Terminal & Fullscreen Mode
+  23. Experiment Registry Menu
+  24. Terminal Window UI (Restored)
+  25. Native Fullscreen Layout (Edge-to-Edge)
+  26. Transforming Social Sidebar (Updated)
+  27. System Toolkit Grid & Cards
+  28. Toolkit Micro-Interactions
+  29. Professional About Interface
+  30. Unified Scroll Snap (Timeline & Credentials)
+  31. System Footer
+
+  Note: sections 7 and 16 are NOT duplicates —
+  #7 is one early rule (.project-card transition)
+  that got placed near the top of the file,
+  while #16 is the full sticky-card layout system
+  used by the Work section. Worth eventually
+  moving #7 down next to #16 so the file reads
+  top-to-bottom in true page order.
+
+  Tip: search for the ALL-CAPS header text
+  above (e.g. "LAB TERMINAL") to jump to a
+  section — each one matches a "====" block
+  further down in this file.
+========================================
+*/
+
+/*
+========================================
 RESET
 ========================================
 */
-@layer reset, theme, base;
-
-@layer reset {
-    *, *::before, *::after {
-        box-sizing: border-box;
-    }
-
-    body {
-        margin: 0;
-    }
+*, *::before, *::after {
+    box-sizing: border-box;
 }
 
-@layer theme {
-    :root {
-        --bg-color: #0a0a0a;
-        --text-color: #ffffff;
-        --text-muted: #9ca3af;
-        --accent-color: #c3fffc;
-        --card-bg: #171717;
-        --border-color: #262626;
-    }
-
-    body.theme-e-ink {
-        --bg-color: #eae7dc;
-        --text-color: #2a2824;
-        --text-muted: #726c5e;
-        --accent-color: #9c4221;
-        --card-bg: #ded9c9;
-        --border-color: #cfc9b8;
-    }
+body {
+    margin: 0;
 }
 
-@layer base {
-    html {
-        scroll-behavior: smooth;
-    }
 
-    body {
-        background-color: var(--bg-color);
-        color: var(--text-color);
-        transition: background-color 0.4s ease, color 0.4s ease;
+/*
+========================================
+THEME VARIABLES (Deep Space vs E-Ink)
+========================================
+*/
+:root {
+    --bg-color: #0a0a0a;
+    --text-color: #ffffff;
+    --text-muted: #9ca3af;
+    --accent-color: #c3fffc;
+    --card-bg: #171717;
+    --border-color: #262626;
+}
 
-        background-image: 
-            linear-gradient(color-mix(in srgb, var(--text-muted) 15%, transparent) 1px, transparent 1px),
-            linear-gradient(90deg, color-mix(in srgb, var(--text-muted) 15%, transparent) 1px, transparent 1px),
-            linear-gradient(color-mix(in srgb, var(--text-muted) 6%, transparent) 1px, transparent 1px),
-            linear-gradient(90deg, color-mix(in srgb, var(--text-muted) 6%, transparent) 1px, transparent 1px);
-        background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
-        background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
-        background-attachment: scroll;
-    }
+/*
+========================================
+DESIGN TOKENS (Radius & Transition Timing)
 
-    ::selection {
-        background-color: var(--accent-color);
-        color: var(--bg-color);
-    }
+Same in both themes, so these live in :root
+only, not repeated in body.theme-e-ink.
+========================================
+*/
+:root {
+    /* Border radius scale */
+    --radius-xs: 0.25rem;
+    --radius-sm: 4px;
+    --radius-md: 0.5rem;
+    --radius-lg: 1rem;
+    --radius-pill: 100px;
+    --radius-circle: 50%;
+
+    /* Transition timing */
+    --transition-fast: var(--transition-fast);          /* hover states: color, border, opacity */
+    --transition-medium: var(--transition-medium);        /* fades, theme swaps */
+    --transition-slow: var(--transition-slow);          /* slower opacity fades */
+    --transition-panel: var(--transition-panel);       /* sliding panels/menus */
+    --transition-panel-slow: var(--transition-panel-slow);  /* larger panel transforms */
+    --transition-spring: var(--transition-spring); /* bracket "snap" effect */
+}
+
+body.theme-e-ink {
+    /* Muted, warm "paper" tone instead of a clean off-white,
+       and a desaturated rust accent instead of a saturated
+       vermillion — real e-ink panels can't render vivid color. */
+    --bg-color: #eae7dc;
+    --text-color: #2a2824;
+    --text-muted: #726c5e;
+    --accent-color: #9c4221;
+    --card-bg: #ded9c9;
+    --border-color: #cfc9b8;
+}
+
+/*
+========================================
+BASE STYLES
+========================================
+*/
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color var(--transition-medium), color var(--transition-medium);
+
+    background-image: 
+        linear-gradient(color-mix(in srgb, var(--text-muted) 15%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--text-muted) 15%, transparent) 1px, transparent 1px),
+        linear-gradient(color-mix(in srgb, var(--text-muted) 6%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--text-muted) 6%, transparent) 1px, transparent 1px);
+    background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+    background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
+    background-attachment: scroll;
+}
+
+/* Custom terminal-style text selection */
+::selection {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
 }
 
 /*
@@ -69,7 +153,7 @@ TYPOGRAPHY EFFECTS (Juba Style)
 .text-outline {
     color: transparent;
     -webkit-text-stroke: 1.5px var(--accent-color);
-    transition: color 0.3s ease, -webkit-text-stroke 0.3s ease;
+    transition: color var(--transition-fast), -webkit-text-stroke var(--transition-fast);
 }
 
 .text-outline:hover {
@@ -87,7 +171,7 @@ NAVBAR SCROLL STATE
 ========================================
 */
 nav {
-    transition: background-color 0.3s ease, backdrop-filter 0.3s ease, padding 0.3s ease, border-color 0.3s ease;
+    transition: background-color var(--transition-fast), backdrop-filter var(--transition-fast), padding var(--transition-fast), border-color var(--transition-fast);
     border-bottom: 1px solid transparent;
 }
 
@@ -106,7 +190,11 @@ body.is-scrolled nav {
 STICKY CARDS (For the Work Section)
 ========================================
 */
-
+.project-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-medium), border-color var(--transition-medium);
+}
 
 /*
 ========================================
@@ -148,7 +236,7 @@ COMPUTER VISION CURSOR
     width: 8px;
     height: 8px;
     background-color: var(--accent-color);
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     will-change: transform;
 }
 
@@ -164,7 +252,7 @@ COMPUTER VISION CURSOR
     letter-spacing: 0.2em;
     white-space: nowrap;
     will-change: transform, opacity;
-    transition: opacity 0.3s ease;
+    transition: opacity var(--transition-fast);
 }
 
 /* The Follower (Dynamic Bounding Box) */
@@ -181,7 +269,7 @@ COMPUTER VISION CURSOR
     height: 40px;
     
     will-change: transform, width, height;
-    transition: width 0.3s ease, height 0.3s ease; 
+    transition: width var(--transition-fast), height var(--transition-fast); 
 }
 
 /* Dynamic CSS Brackets that scale to any height */
@@ -300,7 +388,7 @@ NAVBAR
 .navbar__link {
     color: inherit;
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: color var(--transition-fast);
 }
 
 .navbar__link:hover {
@@ -316,7 +404,7 @@ NAVBAR
     font-family: inherit;
     font-size: 0.75rem;
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
 .navbar__theme-toggle:hover {
@@ -344,8 +432,8 @@ NAVBAR
     bottom: 0;
     left: 0;
     height: 2px;
-    width: 0%;
     background-color: var(--accent-color);
+    width: 0%;
     will-change: width;
     z-index: 51;
 }
@@ -507,15 +595,13 @@ STICKY CARDS LAYOUT (SPLIT DESIGN)
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
     padding: 2rem;
-    border-radius: 1rem;
+    border-radius: var(--radius-lg);
     
     display: grid;
     grid-template-columns: 1fr; /* Mobile first: stacked */
     gap: 2rem;
     
     box-shadow: 0 -15px 40px -20px rgba(0,0,0,0.9);
-
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.4s ease, border-color 0.4s ease;
 }
 
 /* 
@@ -575,7 +661,7 @@ STICKY CARDS LAYOUT (SPLIT DESIGN)
     padding: 0.4rem 0.8rem;
     font-size: 0.7rem;
     color: var(--text-muted);
-    border-radius: 100px; 
+    border-radius: var(--radius-pill); 
     text-transform: uppercase;
 }
 
@@ -587,7 +673,7 @@ STICKY CARDS LAYOUT (SPLIT DESIGN)
     text-transform: uppercase;
     letter-spacing: 0.1em;
     border-bottom: 1px solid transparent;
-    transition: border-color 0.3s ease, color 0.3s ease;
+    transition: border-color var(--transition-fast), color var(--transition-fast);
     align-self: flex-start;
 }
 
@@ -610,7 +696,7 @@ STICKY CARDS LAYOUT (SPLIT DESIGN)
     min-height: 250px;
     background-color: color-mix(in srgb, var(--bg-color) 80%, var(--accent-color));
     border: 1px solid var(--border-color);
-    border-radius: 0.5rem;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -699,7 +785,7 @@ ORBITAL RESUME BADGE
     width: 180px;
     height: 180px;
     margin: 0 auto 3rem auto;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+    transition: transform var(--transition-panel-slow), opacity var(--transition-slow);
     transform-origin: center top;
 }
 
@@ -716,13 +802,13 @@ ORBITAL RESUME BADGE
     font-size: 1.25rem;
     color: var(--accent-color);
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: color var(--transition-fast);
     letter-spacing: 0.1em;
 }
 
 .orbital-badge__icon svg {
     stroke: var(--accent-color);
-    transition: stroke 0.3s ease, transform 0.3s ease;
+    transition: stroke var(--transition-fast), transform var(--transition-fast);
 }
 
 .orbital-badge__icon:hover svg {
@@ -789,7 +875,7 @@ SCROLL REVEAL BIO (NORMAL PARAGRAPH)
 
 .reveal-word {
     color: color-mix(in srgb, var(--text-color) 20%, transparent); /* Faded default state */
-    transition: color 0.4s ease;
+    transition: color var(--transition-medium);
 }
 
 .reveal-word.is-active {
@@ -845,7 +931,7 @@ ABOUT BOTTOM ROW (TELEMETRY & LINKS)
     width: 6px;
     height: 6px;
     background-color: #10b981; /* Success Green */
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     animation: blink 2s infinite ease-in-out;
 }
 
@@ -861,7 +947,7 @@ ABOUT BOTTOM ROW (TELEMETRY & LINKS)
     gap: 0.3rem; /* Controls the space between the icon and the slash */
     color: var(--text-muted);
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: color var(--transition-fast);
 }
 
 .connect-icon {
@@ -946,10 +1032,7 @@ LAB TERMINAL & FULLSCREEN MODE
     height: 500px; /* Fixed height for dashboard feel */
     display: flex;
     flex-direction: column;
-    transition:
-        transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-        opacity 0.5s ease,
-        background-color 0.5s ease;
+    transition: all var(--transition-panel-slow);
 }
 
 .lab-terminal .terminal__body {
@@ -1005,7 +1088,7 @@ EXPERIMENT REGISTRY MENU
     cursor: pointer;
     border-left: 2px solid var(--border-color);
     padding-left: 1.5rem;
-    transition: border-color 0.3s ease, opacity 0.3s ease;
+    transition: border-color var(--transition-fast), opacity var(--transition-fast);
     opacity: 0.4;
     flex-shrink: 0;
 }
@@ -1048,7 +1131,7 @@ TERMINAL WINDOW UI (Restored)
 .terminal {
     background-color: #0a0a0a !important; 
     border: 1px solid #333333 !important;
-    border-radius: 0.5rem;
+    border-radius: var(--radius-md);
     overflow: hidden;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem;
@@ -1074,7 +1157,7 @@ TERMINAL WINDOW UI (Restored)
 .terminal__controls span {
     width: 12px;
     height: 12px;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     background-color: #444; /* Default dot color */
 }
 
@@ -1092,15 +1175,12 @@ TERMINAL WINDOW UI (Restored)
     background: transparent;
     border: 1px solid #444;
     padding: 0.25rem 0.5rem;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     color: #aaaaaa;
     font-family: inherit;
     font-size: 0.7rem;
     cursor: pointer;
-    transition:
-        background-color 0.2s ease,
-        color 0.2s ease,
-        border-color 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .terminal__toggle:hover {
@@ -1169,7 +1249,7 @@ NATIVE FULLSCREEN LAYOUT (Edge-to-Edge)
     
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     
     background-color: #1a1a1a;
     border: 1px solid #333333;
@@ -1177,7 +1257,7 @@ NATIVE FULLSCREEN LAYOUT (Edge-to-Edge)
     
     cursor: pointer;
     z-index: 100001;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
 .lab__grid.is-fullscreen .sidebar-arrow-toggle:hover {
@@ -1187,7 +1267,7 @@ NATIVE FULLSCREEN LAYOUT (Edge-to-Edge)
 
 /* Animate the arrow icon direction */
 .lab__grid.is-fullscreen .sidebar-arrow-toggle svg {
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform var(--transition-panel);
     transform: rotate(0deg); 
 }
 
@@ -1200,7 +1280,7 @@ NATIVE FULLSCREEN LAYOUT (Edge-to-Edge)
     width: 100% !important; 
     height: 100%;
     margin: 0;
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+    transition: width var(--transition-panel); 
 }
 
 .lab__grid.is-fullscreen .lab-terminal {
@@ -1229,7 +1309,7 @@ NATIVE FULLSCREEN LAYOUT (Edge-to-Edge)
     padding: 2rem;
     z-index: 100000;
     transform: translateX(100%); 
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform var(--transition-panel);
     box-shadow: -10px 0 30px rgba(0,0,0,0.5);
 }
 
@@ -1272,11 +1352,9 @@ TRANSFORMING SOCIAL SIDEBAR (Updated)
     flex-direction: column; 
     gap: 1.5rem;
     z-index: 9000;
+    transition: all var(--transition-panel);
     opacity: 1;
     transform: translateX(0);
-    transition:
-        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-        opacity 0.4s ease;
 }
 
 /* Make the icons significantly larger */
@@ -1342,15 +1420,12 @@ SYSTEM TOOLKIT GRID & CARDS
     border: 1px solid var(--border-color);
     color: var(--text-muted);
     padding: 0.5rem 1.25rem;
-    border-radius: 100px;
+    border-radius: var(--radius-pill);
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem;
     text-transform: uppercase;
     cursor: pointer;
-    transition:
-        background-color 0.3s ease,
-        color 0.3s ease,
-        border-color 0.3s ease;
+    transition: all var(--transition-fast);
 }
 
 .toolkit-tab-btn:hover {
@@ -1375,14 +1450,14 @@ SYSTEM TOOLKIT GRID & CARDS
 .toolkit-card {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 1rem;
+    border-radius: var(--radius-lg);
     padding: 2.5rem 1.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .toolkit-card:hover {
@@ -1397,7 +1472,7 @@ SYSTEM TOOLKIT GRID & CARDS
     margin-bottom: 1.5rem;
     /* Optional: If you want icons to adapt strictly to your theme */
     /* filter: grayscale(100%) opacity(0.8); */
-    transition: filter 0.3s ease;
+    transition: filter var(--transition-fast);
 }
 
 .toolkit-card:hover img {
@@ -1453,7 +1528,7 @@ TOOLKIT MICRO-INTERACTIONS
         transparent 40%
     );
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity var(--transition-medium);
     z-index: 0;
     pointer-events: none;
 }
@@ -1477,12 +1552,7 @@ TOOLKIT MICRO-INTERACTIONS
     border-color: var(--accent-color);
     border-style: solid;
     opacity: 0;
-    transition:
-        top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-        right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-        bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-        left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-        opacity 0.4s ease;
+    transition: all var(--transition-spring); /* Spring-like easing */
 }
 
 /* Initial Expanded State (Pushed outward and invisible) */
@@ -1529,7 +1599,7 @@ PROFESSIONAL ABOUT INTERFACE
     text-transform: uppercase;
     letter-spacing: 0.1em;
     cursor: pointer;
-    transition: color 0.3s ease;
+    transition: color var(--transition-fast);
     position: relative;
 }
 
@@ -1567,7 +1637,7 @@ PROFESSIONAL ABOUT INTERFACE
     height: 100%;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.4s ease;
+    transition: opacity var(--transition-medium);
     overflow-y: auto; /* Allow internal scrolling */
     
     /* Hide scrollbars for clean look */
@@ -1632,7 +1702,7 @@ UNIFIED SCROLL SNAP (TIMELINE & CREDENTIALS)
 
     /* Unfocused State (Faded) */
     opacity: 0.25;
-    transition: opacity 0.5s ease;
+    transition: opacity var(--transition-slow);
 }
 
 /* Focused State (Activated via JS Intersection Observer) */
@@ -1671,12 +1741,9 @@ UNIFIED SCROLL SNAP (TIMELINE & CREDENTIALS)
     /* Unfocused Node State (Dim and Hollow) */
     background-color: var(--bg-color);
     border: 2px solid var(--border-color);
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     box-shadow: none;
-    transition:
-        background-color 0.4s ease,
-        border-color 0.4s ease,
-        box-shadow 0.4s ease;
+    transition: all var(--transition-medium);
 }
 
 /* Focused Node State (Glowing Accent Color) */
@@ -1744,9 +1811,9 @@ UNIFIED SCROLL SNAP (TIMELINE & CREDENTIALS)
     text-decoration: none;
     border: 1px solid var(--accent-color);
     padding: 0.5rem 1rem;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
     text-transform: uppercase;
-    transition: all 0.3s ease;
 }
 
 .credential-verify-btn:hover {
@@ -1824,13 +1891,13 @@ SYSTEM FOOTER
 .terminal-note {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 0.5rem;
+    border-radius: var(--radius-md);
     width: 100%;
     max-width: 600px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     /* Slight rotation for that organic "card" feel from your reference */
     transform: rotate(-1deg); 
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-fast);
 }
 
 .terminal-note:hover {
@@ -1844,7 +1911,7 @@ SYSTEM FOOTER
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.75rem;
     color: var(--text-muted);
-    border-radius: 0.5rem 0.5rem 0 0;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
 
 .terminal-note__body {
@@ -1874,17 +1941,14 @@ SYSTEM FOOTER
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
     padding: 0.75rem 1.5rem;
-    border-radius: 0.25rem;
+    border-radius: var(--radius-xs);
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem;
     color: var(--text-muted);
     text-decoration: none;
+    transition: all var(--transition-fast);
+    /* Mimic mechanical keyboard keys */
     box-shadow: 0 4px 0 var(--border-color); 
-    transition:
-        background-color 0.3s ease,
-        color 0.3s ease,
-        border-color 0.3s ease,
-        transform 0.3s ease;
 }
 
 .footer-btn:hover {
