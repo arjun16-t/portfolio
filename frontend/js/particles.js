@@ -120,7 +120,7 @@ Powered by Three.js & Custom GLSL Shaders
                     colors.push(r / 255.0, r / 255.0, r / 255.0);
 
                     // Outside the kernel, keep the image abstract and sparse
-                    baseAlphas.push(r > 40 ? (r / 255.0) * 0.6 : 0.0);
+                    baseAlphas.push(r > 40 ? (r / 255.0) * 1.0 : 0.0);
                 }
             }
         }
@@ -136,7 +136,7 @@ Powered by Three.js & Custom GLSL Shaders
             uniforms: {
                 uMouse: { value: new THREE.Vector2(-1000, -1000) },
                 uScroll: { value: 0.0 },
-                uColorBase: { value: new THREE.Color('#726c5e') },
+                uColorBase: { value: new THREE.Color('#2c4343') },
                 uColorHover: { value: new THREE.Color('#c3fffc') },
                 uKernelSize: { value: 60.0 } // Smaller, focused convolution window
             },
@@ -202,7 +202,7 @@ Powered by Three.js & Custom GLSL Shaders
                 vec4 mvPosition = modelViewMatrix * vec4(targetPos, 1.0);
                 
                 // SIZE LOGIC
-                gl_PointSize = mix(1.5, 2.5, inside);
+                gl_PointSize = mix(3.0, 4.0, inside);
 
                 // COLOR & ALPHA LOGIC
                 vColor = mix(uColorBase, aColor, inside);
