@@ -703,6 +703,24 @@ STICKY CARDS LAYOUT (SPLIT DESIGN)
     overflow: hidden;
 }
 
+/* Ensure the image fills the container perfectly */
+.project-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6;
+    filter: grayscale(100%); /* Keeps it matching the terminal vibe by default */
+    transition: transform 0.5s ease, opacity 0.5s ease, filter 0.5s ease;
+    will-change: transform, opacity, filter;
+}
+
+/* On hover, restore color, brightness, and slightly scale the image */
+.project-card:hover .project-visual img {
+    opacity: 1;
+    filter: grayscale(0%);
+    transform: scale(1.05); /* Creates a smooth zoom effect */
+}
+
 .visual-placeholder-text {
     font-size: 0.75rem;
     color: var(--accent-color);

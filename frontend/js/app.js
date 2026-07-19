@@ -62,6 +62,7 @@ INITIALIZATION
 document.addEventListener("DOMContentLoaded", initApp);
 
 function initApp() {
+    FeaturedWork.init();
     Cursor.init();
     Theme.init();
     Navbar.init();
@@ -80,6 +81,54 @@ function initApp() {
 
     Toolkit.init();
 }
+
+/*
+========================================
+FEATURED WORK GRID INJECTION
+========================================
+*/
+const FeaturedWork = {
+    init() {
+        const container = document.getElementById('featured-work-container');
+        if (!container || typeof FEATURED_WORK === 'undefined') return;
+
+        FEATURED_WORK.forEach(project => {
+            // Generate the HTML for the metric tags
+            const metricsHTML = project.metrics.map(metric => `<span class="metric-tag">${metric}</span>`).join('');
+            
+            // Build the card container
+            const card = document.createElement('div');
+            card.className = 'project-card';
+            
+            // Inject the HTML structure matching your original markup
+            card.innerHTML = `
+                <div class="project-card__left">
+                    <div class="project-card__meta-group">
+                        <span class="project-card__category">${project.category}</span>
+                    </div>
+                    
+                    <h3 class="project-card__title scramble-text" data-text="${project.title}">${project.title}</h3>
+                    <p class="project-card__desc">${project.description}</p>
+                    
+                    <div class="project-card__metrics">
+                        ${metricsHTML}
+                    </div>
+
+                    <a href="${project.link}" target="_blank" class="github-link">
+                        [↗] VIEW_SOURCE
+                    </a>
+                </div>
+                <div class="project-card__right">
+                    <div class="project-visual">
+                         <img src="${project.image}" alt="${project.title} Architecture">
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(card);
+        });
+    }
+};
 
 /*
 ========================================

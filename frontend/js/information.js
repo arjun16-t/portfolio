@@ -1,10 +1,36 @@
 // information.js
 // Centralized data registry for portfolio content
+const FEATURED_WORK = [
+    {
+        category: "AI Platform • 2026",
+        title: "AthenaChat",
+        description: "Architected a chatbot-as-a-service platform with isolated vector search using Qdrant payload filtering and SHA256-based deduplication.",
+        metrics: ["Django REST", "Jina Embeddings", "Qdrant", "Groq", "Celery", "SPLADE"],
+        link: "https://github.com/arjun16-t",
+        image: "assets/images/athenachat-visual.jpg" // Add your image path here
+    },
+    {
+        category: "Predictive Model • 2026",
+        title: "NSE Stock Prediction Engine",
+        description: "Built an end-to-end ML pipeline training GRU, LSTM, and Transformers on 55k sequences with FinBERT news sentiment fusion.",
+        metrics: ["PyTorch", "FinBERT", "SHAP", "Streamlit", "Pandas-TA", "GRU / LSTM"],
+        link: "https://github.com/arjun16-t",
+        image: "assets/images/nse-visual.jpg" // Add your image path here
+    },
+    {
+        category: "Distributed System • 2025",
+        title: "HireMailer",
+        description: "Architected a distributed three-service system enabling non-blocking bulk email operations processing 100+ emails/batch with zero spam flagging.",
+        metrics: ["Python", "Django", "Celery", "Redis", "PostgreSQL"],
+        link: "https://github.com/arjun16-t",
+        image: "assets/images/hiremailer-visual.jpg" // Add your image path here
+    }
+];
 
 const EXPERIMENTS_DATA = [
     {
-        id: "EXP_01",
-        name: "TRANSFORMER STOCK PREDICTOR",
+        id: "PROJ_01",
+        name: "AthenaChat - Chatbot-As-A-Service",
         type: "interactive",
         description: "LSTM, GRU, and Transformer models for Indian market prediction.",
         logs: [
@@ -26,7 +52,7 @@ const EXPERIMENTS_DATA = [
         `
     },
     {
-        id: "EXP_02",
+        id: "PROJ_02",
         name: "HANDWRITING GENERATION",
         type: "interactive",
         description: "Replicating human typeface using the IAM-OnDB dataset.",
